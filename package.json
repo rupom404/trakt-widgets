@@ -1,0 +1,39 @@
+{
+  "name": "trakt-widgets",
+  "version": "2.1.0",
+  "private": true,
+  "description": "Trakt Widgets for free users!",
+  "main": "app.js",
+  "scripts": {
+    "prepare": "husky",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "foxbinner",
+  "license": "MIT",
+  "homepage": "https://github.com/foxbinner/trakt-widgets",
+  "dependencies": {
+    "@fontsource/exo-2": "^5.2.8",
+    "@napi-rs/canvas": "^0.1.95",
+    "dotenv": "^16.3.1",
+    "express": "^4.21.1",
+    "http-errors": "^2.0.0",
+    "i18n": "^0.15.1",
+    "trakt.tv": "^8.2.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "nodemon": "^2.0.12"
+  },
+  "engines": {
+    "node": "22.x"
+  },
+  "packageManager": "yarn@1.22.22",
+  "lint-staged": {
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
+      "biome check --write --files-ignore-unknown=true --no-errors-on-unmatched"
+    ]
+  }
+}
