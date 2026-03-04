@@ -3,7 +3,6 @@
 require("dotenv").config();
 const express = require("express");
 const createError = require("http-errors");
-const i18n = require("i18n");
 const path = require("path");
 
 const routers = require("./routers/index");
@@ -13,29 +12,19 @@ const { renderErrorSvg } = require("./views/templates/error-svg");
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-i18n.configure({
-  locales: ["en", "fr", "it", "sv"],
-  localePath: path.join(__dirname, "locales"),
-  defaultLocale: "en",
-  retryInDefaultLocale: true,
-  queryParameter: "language",
-  directory: path.join(__dirname, "locales"),
-});
-
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(i18n.init);
 
 app.use("/", routers);
 
 app.use((req, res, next) => {
-  next(createError(404, res.__("error.PAGE_NOT_FOUND")));
+  next(createError(404, "Page not found"));
 });
 
 app.use((err, req, res, next) => {
   err.status = err.status || 500;
-  err.message = err.message || res.__("error.INTERNAL_ERROR");
+  err.message = err.message || "Internal Error";
 
   res.status(err.status);
   res.format({

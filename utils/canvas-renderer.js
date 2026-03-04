@@ -155,9 +155,9 @@ const renderCard = async ({ data, format = "jpeg", scale = 1 }) => {
   ctx.font = "700 36px 'Exo 2'";
   const badgeTextW = ctx.measureText(BADGE).width;
   const badgeW = badgeTextW + 36;
-  const BADGE_Y = 40;
-  const BADGE_H = 44;
-  roundedRect(ctx, 40, BADGE_Y, badgeW, BADGE_H, 8);
+  const BADGE_Y = 67;
+  const BADGE_H = 56;
+  roundedRect(ctx, 60, BADGE_Y, badgeW, BADGE_H, 8);
   ctx.fillStyle = "#9f42c6";
   ctx.fill();
   ctx.fillStyle = "#ffffff";
@@ -169,7 +169,7 @@ const renderCard = async ({ data, format = "jpeg", scale = 1 }) => {
   const capDescent =
     bm.actualBoundingBoxDescent ?? bm.fontBoundingBoxDescent ?? 5;
   const textY = BADGE_Y + (BADGE_H + capAscent - capDescent) / 2;
-  ctx.fillText(BADGE, 58, textY);
+  ctx.fillText(BADGE, 78, textY);
 
   // ── Title ────────────────────────────────────────────────────────────────
   const el = data.element;
@@ -214,10 +214,10 @@ const renderCard = async ({ data, format = "jpeg", scale = 1 }) => {
 
   // ── Trakt logo (top-right) ──────────────────────────────────────────────
   {
-    // SVG viewBox is 0 0 48 48, rendered at 80×80 → scale = 80/48
-    const LOGO_X = 1380;
+    // SVG viewBox is 0 0 48 48, rendered at 110×110 → scale = 110/48
+    const LOGO_X = 1354;
     const LOGO_Y = 40;
-    const LOGO_SIZE = 80;
+    const LOGO_SIZE = 110;
     const scale = LOGO_SIZE / 48;
     ctx.save();
     ctx.translate(LOGO_X, LOGO_Y);

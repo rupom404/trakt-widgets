@@ -8,7 +8,7 @@ const trakt = new Trakt({
   client_id: process.env.TRAKT_CLIENT_ID,
 });
 
-const watched = async (req, next, language) => {
+const watched = async (req, next) => {
   const { slug } = req.params;
 
   return await trakt.users
@@ -45,7 +45,6 @@ const watched = async (req, next, language) => {
         type: type,
         season: type === "show" ? element.episode.season : null,
         episode: type === "show" ? element.episode.number : null,
-        language,
       });
 
       return {
@@ -61,7 +60,7 @@ const watched = async (req, next, language) => {
     });
 };
 
-const watching = async (req, next, language) => {
+const watching = async (req, next) => {
   const { slug } = req.params;
 
   return await trakt.users
@@ -98,7 +97,6 @@ const watching = async (req, next, language) => {
         type: type,
         season: type === "show" ? element.episode.season : null,
         episode: type === "show" ? element.episode.number : null,
-        language,
       });
 
       return {

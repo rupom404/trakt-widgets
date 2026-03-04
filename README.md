@@ -26,12 +26,6 @@ Drop this anywhere — GitHub README, personal site, anywhere you can render an 
   src="https://trakt-card.vercel.app/{username}/watched.png"
   alt="Last watched"
 />
-
-<!-- Currently watching -->
-<img
-  src="https://trakt-card.vercel.app/{username}/watching.png"
-  alt="Now watching"
-/>
 ```
 
 Visit the URL **without** `.png` to get an auto-refreshing viewer page:
@@ -39,23 +33,6 @@ Visit the URL **without** `.png` to get an auto-refreshing viewer page:
 ```
 https://trakt-card.vercel.app/{username}/watched
 ```
-
----
-
-## ⚙️ Options
-
-Append `?language=` to change the card language:
-
-```
-https://trakt-card.vercel.app/{username}/watched.png?language=fr
-```
-
-| Value | Language |
-| :---: | :------- |
-| `en`  | English  |
-| `fr`  | French   |
-| `it`  | Italian  |
-| `sv`  | Swedish  |
 
 ---
 
