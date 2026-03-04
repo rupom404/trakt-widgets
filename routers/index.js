@@ -24,7 +24,9 @@ router.get("/:slug/:layout.:ext(png)", async (req, res, next) => {
   const { slug, layout } = req.params;
   const language = req.locale;
   const isHalf = layout.endsWith("_half");
-  const baseLayout = isHalf ? layout.slice(0, -5) : layout;
+  const is261 = layout.endsWith("_261");
+  const suffix = isHalf ? 5 : is261 ? 4 : 0;
+  const baseLayout = suffix ? layout.slice(0, -suffix) : layout;
 
   if (!layouts.includes(baseLayout))
     return next(createError(400, res.__("error.LAYOUT_NOT_FOUND")));
@@ -36,7 +38,7 @@ router.get("/:slug/:layout.:ext(png)", async (req, res, next) => {
     const { buffer, mime } = await renderCard({
       data,
       format: "png",
-      scale: isHalf ? 0.5 : 1,
+      scale: isHalf ? 0.5 : is261 ? 261 / 846 : 1,
     });
 
     res.set("Cache-Control", "no-cache");
@@ -52,7 +54,9 @@ router.get("/:slug/:layout", async (req, res, next) => {
   const { slug, layout } = req.params;
   const language = req.locale;
   const isHalf = layout.endsWith("_half");
-  const baseLayout = isHalf ? layout.slice(0, -5) : layout;
+  const is261 = layout.endsWith("_261");
+  const suffix = isHalf ? 5 : is261 ? 4 : 0;
+  const baseLayout = suffix ? layout.slice(0, -suffix) : layout;
 
   if (!layouts.includes(baseLayout))
     return next(createError(400, res.__("error.LAYOUT_NOT_FOUND")));
@@ -70,7 +74,7 @@ router.get("/:slug/:layout", async (req, res, next) => {
         const { buffer, mime } = await renderCard({
           data,
           format: "png",
-          scale: isHalf ? 0.5 : 1,
+          scale: isHalf ? 0.5 : is261 ? 261 / 846 : 1,
         });
 
         res.set("Cache-Control", "no-cache");
