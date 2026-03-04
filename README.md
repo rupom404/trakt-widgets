@@ -1,168 +1,91 @@
-# trakt-widgets
+<div align="center">
 
-Dynamically generated PNG cards showing what a [Trakt.tv](https://trakt.tv) user last watched or is currently watching — embed them in any README, website, or profile.
+# 📺 trakt-widgets
 
-> ⚠️ Your Trakt account must be set to **public**.
+**Dynamically generated cards showing what you last watched on [Trakt.tv](https://trakt.tv)**  
+Embed them in any README, website, or profile — as a PNG or live viewer.
 
-```html
-<img
-  src="https://trakt-widgets.vercel.app/{username}/watched"
-  alt="trakt-widget"
-/>
-```
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-trakt--card.vercel.app-red?style=for-the-badge&logo=vercel)](https://trakt-card.vercel.app)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+
+![Screenshot](public/pictures/screenshot.png)
+
+</div>
 
 ---
 
-## Layouts
+## ✨ Usage
 
-| Layout     | Description                            | Preview URL           |
-| :--------- | :------------------------------------- | :-------------------- |
-| `watched`  | Most recently watched movie or episode | `/foxbinner/watched`  |
-| `watching` | Currently playing movie or episode     | `/foxbinner/watching` |
+> ⚠️ Your Trakt profile must be set to **public**.
 
-### Direct PNG embed (e.g. GitHub README)
+Drop this anywhere — GitHub README, personal site, anywhere you can render an image:
 
 ```html
-<!-- Watched -->
+<!-- Last watched -->
 <img
-  src="https://trakt-widgets.vercel.app/foxbinner/watched.png"
+  src="https://trakt-card.vercel.app/{username}/watched.png"
   alt="Last watched"
 />
 
 <!-- Currently watching -->
 <img
-  src="https://trakt-widgets.vercel.app/foxbinner/watching.png"
+  src="https://trakt-card.vercel.app/{username}/watching.png"
   alt="Now watching"
 />
 ```
 
-### Viewer page
-
-Visiting the URL without `.png` opens an HTML viewer that auto-refreshes the card:
+Visit the URL **without** `.png` to get an auto-refreshing viewer page:
 
 ```
-https://trakt-widgets.vercel.app/{username}/watched
+https://trakt-card.vercel.app/{username}/watched
 ```
 
 ---
 
-## Query Parameters
+## ⚙️ Options
 
-| Parameter  | Default | Accepted values     | Description                 |
-| :--------- | :-----: | :------------------ | :-------------------------- |
-| `language` |  `en`   | `en` `fr` `it` `sv` | Preferred backdrop language |
+Append `?language=` to change the card language:
 
-```html
-<img
-  src="https://trakt-widgets.vercel.app/foxbinner/watched.png?language=fr"
-  alt="trakt-widget"
-/>
+```
+https://trakt-card.vercel.app/{username}/watched.png?language=fr
 ```
 
----
-
-## Image sources
-
-The card backdrop is resolved through the following fallback chain:
-
-1. **TVmaze** — episode-specific still (TV shows only)
-2. **TMDB** — high-resolution backdrop (movies & shows, requires API key)
-3. **Metahub** — free backdrop via IMDB ID (no key needed)
-4. **TVmaze** — show-level backdrop fallback
-
-If no image is found the card renders on a dark background.
+| Value | Language |
+| :---: | :------- |
+| `en`  | English  |
+| `fr`  | French   |
+| `it`  | Italian  |
+| `sv`  | Swedish  |
 
 ---
 
-## Self-hosting
+## 🚀 Self-hosting
 
-### Prerequisites
-
-- Node.js 22+
-- A [Trakt API](https://trakt.tv/oauth/applications) client ID
-- _(Optional)_ A [TMDB API v3](https://www.themoviedb.org/settings/api) key for higher-quality backdrops
-
-### Setup
+**Prerequisites:** Node.js 22+, a [Trakt API](https://trakt.tv/oauth/applications) client ID, and optionally a [TMDB API key](https://www.themoviedb.org/settings/api) for HD backdrops.
 
 ```bash
 git clone https://github.com/foxbinner/trakt-widgets
 cd trakt-widgets
-cp .env.sample .env        # then fill in your keys
+cp .env.sample .env   # fill in your keys
 yarn install
-yarn start                 # or: yarn dev  (nodemon watch mode)
+yarn dev              # or: yarn start
 ```
 
-Open `http://localhost:3000` in your browser.
+| Variable          | Required | Description                |
+| :---------------- | :------: | :------------------------- |
+| `TRAKT_CLIENT_ID` |    ✅    | Trakt API client ID        |
+| `TMDB`            |    ⬜    | TMDB key for HD backdrops  |
+| `PORT`            |    ⬜    | HTTP port (default `3000`) |
 
-### Environment variables
-
-| Variable          | Required | Description                            |
-| :---------------- | :------: | :------------------------------------- |
-| `TRAKT_CLIENT_ID` |    ✅    | Trakt API client ID                    |
-| `TMDB`            |    ⬜    | TMDB API v3 key — enables HD backdrops |
-| `PORT`            |    ⬜    | HTTP port (default: `3000`)            |
-
-### Deploy to Vercel
-
-```bash
-vercel deploy
-```
-
-The included `vercel.json` routes everything through `app.js`.
+To deploy on Vercel, just run `vercel deploy` — `vercel.json` is already configured.
 
 ---
 
-## Project structure
+## 🛠 Stack
 
-```
-trakt-widgets/
-├── app.js                        # Express entry point
-├── controllers/
-│   └── controller.js             # Trakt API calls (watched / watching)
-├── locales/
-│   ├── en.json                   # English strings
-│   ├── fr.json                   # French
-│   ├── it.json                   # Italian
-│   └── sv.json                   # Swedish
-├── public/
-│   └── styles/style.css          # Home page styles
-├── routers/
-│   └── index.js                  # Route definitions
-├── utils/
-│   ├── canvas-renderer.js        # PNG card renderer (@napi-rs/canvas)
-│   └── image.js                  # Backdrop image fetching & fallback chain
-├── views/templates/
-│   ├── error-page.js             # HTML error page
-│   ├── error-svg.js              # SVG error card
-│   ├── home.js                   # Landing / demo page
-│   ├── viewer.js                 # Widget viewer page
-│   └── layouts/default.js        # Shared HTML layout
-├── .env.sample                   # Environment variable template
-├── vercel.json                   # Vercel deployment config
-└── package.json
-```
+[Express](https://expressjs.com) · [@napi-rs/canvas](https://github.com/Brooooooklyn/canvas) · [trakt.tv](https://www.npmjs.com/package/trakt.tv) · TMDB · TVmaze · Metahub · [Vercel](https://vercel.com)
 
 ---
-
-## Tech stack
-
-| Layer          | Library / Service                                         |
-| :------------- | :-------------------------------------------------------- |
-| Server         | [Express](https://expressjs.com)                          |
-| Card rendering | [@napi-rs/canvas](https://github.com/Brooooooklyn/canvas) |
-| Trakt data     | [trakt.tv](https://www.npmjs.com/package/trakt.tv)        |
-| Backdrops      | TMDB · TVmaze · Metahub                                   |
-| i18n           | [i18n](https://www.npmjs.com/package/i18n)                |
-| Deployment     | [Vercel](https://vercel.com)                              |
-
----
-
-## Credits
-
-- [Trakt.tv](https://trakt.tv) — watch history data
-- [The Movie Database (TMDB)](https://www.themoviedb.org) — backdrop images
-- [TVmaze](https://www.tvmaze.com) — episode stills & show backdrops
-- [Metahub](https://metahub.spaces) — free IMDB-based backdrops
 
 ## License
 
