@@ -23,15 +23,21 @@ router.get("/", (req, res) => {
 router.get("/:slug/:layout.:ext(png)", async (req, res, next) => {
   const { slug, layout } = req.params;
   const language = req.locale;
+  const isHalf = layout.endsWith("_half");
+  const baseLayout = isHalf ? layout.slice(0, -5) : layout;
 
-  if (!layouts.includes(layout))
+  if (!layouts.includes(baseLayout))
     return next(createError(400, res.__("error.LAYOUT_NOT_FOUND")));
 
   try {
-    const data = await controller[layout](req, next, language);
+    const data = await controller[baseLayout](req, next, language);
     if (!data) return;
 
-    const { buffer, mime } = await renderCard({ data, format: "png" });
+    const { buffer, mime } = await renderCard({
+      data,
+      format: "png",
+      scale: isHalf ? 0.5 : 1,
+    });
 
     res.set("Cache-Control", "no-cache");
     res.set("Content-Type", mime);
@@ -45,8 +51,10 @@ router.get("/:slug/:layout.:ext(png)", async (req, res, next) => {
 router.get("/:slug/:layout", async (req, res, next) => {
   const { slug, layout } = req.params;
   const language = req.locale;
+  const isHalf = layout.endsWith("_half");
+  const baseLayout = isHalf ? layout.slice(0, -5) : layout;
 
-  if (!layouts.includes(layout))
+  if (!layouts.includes(baseLayout))
     return next(createError(400, res.__("error.LAYOUT_NOT_FOUND")));
 
   res.format({
@@ -56,10 +64,14 @@ router.get("/:slug/:layout", async (req, res, next) => {
     },
     "image/*": async () => {
       try {
-        const data = await controller[layout](req, next, language);
+        const data = await controller[baseLayout](req, next, language);
         if (!data) return;
 
-        const { buffer, mime } = await renderCard({ data, format: "png" });
+        const { buffer, mime } = await renderCard({
+          data,
+          format: "png",
+          scale: isHalf ? 0.5 : 1,
+        });
 
         res.set("Cache-Control", "no-cache");
         res.set("Content-Type", mime);

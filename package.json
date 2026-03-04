@@ -28,7 +28,7 @@
     "nodemon": "^2.0.12"
   },
   "engines": {
-    "node": "22.x"
+    "node": "24.x"
   },
   "packageManager": "yarn@1.22.22",
   "lint-staged": {
