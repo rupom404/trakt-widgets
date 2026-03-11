@@ -5,7 +5,6 @@ const createError = require("http-errors");
 const controller = require("../controllers/controller");
 const { renderCard } = require("../utils/canvas-renderer");
 const { renderHome } = require("../views/templates/home");
-const { renderViewer } = require("../views/templates/viewer");
 
 const router = express.Router();
 
@@ -48,7 +47,7 @@ router.get("/:slug/:layout.:ext(png)", async (req, res, next) => {
   }
 });
 
-// /:slug/:layout  → viewer page (HTML) or image (image/* accept header)
+// /:slug/:layout  → image only (image/* accept header), HTML requests get 404
 router.get("/:slug/:layout", async (req, res, next) => {
   const { slug, layout } = req.params;
   const isHalf = layout.endsWith("_half");
@@ -60,10 +59,6 @@ router.get("/:slug/:layout", async (req, res, next) => {
     return next(createError(400, "Layout not found"));
 
   res.format({
-    html: () => {
-      res.set("Content-Type", "text/html");
-      res.send(renderViewer({ slug, layout }));
-    },
     "image/*": async () => {
       try {
         const data = await controller[baseLayout](req, next);
@@ -82,6 +77,7 @@ router.get("/:slug/:layout", async (req, res, next) => {
         next(err);
       }
     },
+    default: () => next(createError(404, "Not found")),
   });
 });
 
