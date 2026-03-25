@@ -5,7 +5,6 @@
 **Dynamically generated cards showing what you last watched on [Trakt.tv](https://trakt.tv)**  
 Embed them in any README, website, or profile as a PNG image.
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-traktrack.vercel.app-red?style=for-the-badge&logo=vercel)](https://traktrack.vercel.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 [![Built with Tailwind CSS](https://img.shields.io/badge/UI-Tailwind%20CSS-38bdf8?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 
@@ -24,7 +23,7 @@ Drop this anywhere — GitHub README, personal site, anywhere you can render an 
 ```html
 <!-- Last watched -->
 <img
-  src="https://traktrack.vercel.app/{username}/watched.png"
+  src="https://{your-domain}/{username}/watched.png"
   alt="Last watched"
 />
 ```
