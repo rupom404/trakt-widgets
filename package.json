@@ -13,6 +13,7 @@
   "license": "MIT",
   "homepage": "https://github.com/foxbinner/trakt-widgets",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.12"
     "@fontsource/exo-2": "^5.2.8",
     "@napi-rs/canvas": "^0.1.95",
     "dotenv": "^16.3.1",
